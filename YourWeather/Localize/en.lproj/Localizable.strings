@@ -1,0 +1,21 @@
+/*
+  Localizable.strings
+  YourWeather
+
+  Created by Kirill Sytkov on 09.03.2022.
+  
+*/
+
+"Welcome!" = "Welcome!";
+"The “YouWeather” app provides accurate forecast and weather alerts wherever you are. We must be allowed to use your Location Services." = "The “YouWeather” app provides accurate forecast and weather alerts wherever you are. We must be allowed to use your Location Services.";
+"Next" = "Next";
+"We use and share the precise location of your device based оn our Privacy Policy" = "We use and share the precise location of your device based оn our Privacy Policy";
+"Max" = "Max";
+"Min" = "Min";
+"Feeling" = "Feeling";
+"Pressure" = "Pressure";
+"Wind speed" = "Wind speed";
+"Humidity" = "Humidity";
+"Use current location" = "Use current location";
+"Search" = "Search";
+"Location" = "Location";

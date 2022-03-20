@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>1</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>2</string>
+	<key>NSLocationUsageDescription</key>
+	<string>3</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Не нужно вводить местоположение вручную, чтобы получить местный прогноз погоды.</string>
+</dict>
+</plist>

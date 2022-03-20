@@ -1,0 +1,90 @@
+
+/* Class = "UILabel"; text = "-"; ObjectID = "0Ie-7X-bN4"; */
+"0Ie-7X-bN4.text" = "-";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "78a-lN-Kcn"; */
+"78a-lN-Kcn.text" = "-";
+
+/* Class = "UIButton"; normalTitle = "Продолжить"; ObjectID = "9jn-ag-QE2"; */
+"9jn-ag-QE2.normalTitle" = "Продолжить";
+
+/* Class = "UILabel"; text = "10:50 Пн"; ObjectID = "Cxr-n3-zXL"; */
+"Cxr-n3-zXL.text" = "10:50 Пн";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "Exo-KY-NXB"; */
+"Exo-KY-NXB.text" = "-";
+
+/* Class = "UILabel"; text = "Использовать текущую геопозицию"; ObjectID = "Gfz-rY-REQ"; */
+"Gfz-rY-REQ.text" = "Использовать текущую геопозицию";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "HpL-YH-IeL"; */
+"HpL-YH-IeL.text" = "-";
+
+/* Class = "UILabel"; text = "Скорость ветра "; ObjectID = "J39-ls-x6U"; */
+"J39-ls-x6U.text" = "Скорость ветра ";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "JgS-OV-YzV"; */
+"JgS-OV-YzV.text" = "Title";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "KKG-IL-1Ch"; */
+"KKG-IL-1Ch.text" = "-";
+
+/* Class = "UILabel"; text = "Мин "; ObjectID = "LM7-6u-wbJ"; */
+"LM7-6u-wbJ.text" = "Мин ";
+
+/* Class = "UILabel"; text = "Приветствуем!"; ObjectID = "LpJ-rT-yP9"; */
+"LpJ-rT-yP9.text" = "Приветствуем!";
+
+/* Class = "UILabel"; text = "Макс "; ObjectID = "OvK-MJ-tuL"; */
+"OvK-MJ-tuL.text" = "Макс ";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "T2j-ek-TBB"; */
+"T2j-ek-TBB.text" = "-";
+
+/* Class = "UILabel"; text = "Влажность"; ObjectID = "UiP-BT-Yha"; */
+"UiP-BT-Yha.text" = "Влажность";
+
+/* Class = "UILabel"; text = "Subtitle"; ObjectID = "dRi-ji-sym"; */
+"dRi-ji-sym.text" = "Subtitle";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "eHi-7i-q80"; */
+"eHi-7i-q80.text" = "-";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "eLf-Fa-sfC"; */
+"eLf-Fa-sfC.text" = "-";
+
+/* Class = "UINavigationItem"; title = "-"; ObjectID = "gEI-XR-abP"; */
+"gEI-XR-abP.title" = "-";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "gPV-qc-ceZ"; */
+"gPV-qc-ceZ.text" = "-";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "gjn-MZ-sFZ"; */
+"gjn-MZ-sFZ.title" = "Item";
+
+/* Class = "UINavigationItem"; title = "Местоположение"; ObjectID = "joz-tO-iOT"; */
+"joz-tO-iOT.title" = "Местоположение";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "l4c-Nd-ZFX"; */
+"l4c-Nd-ZFX.text" = "-";
+
+/* Class = "UILabel"; text = "Давление"; ObjectID = "leU-0y-BPc"; */
+"leU-0y-BPc.text" = "Давление";
+
+/* Class = "UILabel"; text = "По ощущениям   "; ObjectID = "maa-7W-e1C"; */
+"maa-7W-e1C.text" = "По ощущениям   ";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "oH6-me-Z15"; */
+"oH6-me-Z15.text" = "-";
+
+/* Class = "UILabel"; text = "Мы используем и делимся точным местоположением вашего устройства, на основе нашей Политики конфиденциальности"; ObjectID = "qiv-do-BUT"; */
+"qiv-do-BUT.text" = "Мы используем и делимся точным местоположением вашего устройства, на основе нашей Политики конфиденциальности";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "sex-X2-5z2"; */
+"sex-X2-5z2.text" = "-";
+
+/* Class = "UILabel"; text = "Приложение \"YouWeather\" предоставляет точный прогноз и погодные предупреждения где бы вы ни были. Пожалуйста, дайте разрешение на использование Службы геолокации."; ObjectID = "w8R-bZ-RIu"; */
+"w8R-bZ-RIu.text" = "Приложение \"YouWeather\" предоставляет точный прогноз и погодные предупреждения где бы вы ни были. Пожалуйста, дайте разрешение на использование Службы геолокации.";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "yTm-5Y-deB"; */
+"yTm-5Y-deB.text" = "-";

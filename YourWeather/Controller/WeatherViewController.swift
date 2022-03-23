@@ -47,6 +47,11 @@ class WeatherViewController: UIViewController {
         UserDefaults.standard.set(true, forKey: keys.firstStart)
         mainSettings()
         refreshControllSettings()
+        let button = UIButton(type: .roundedRect)
+        button.frame = CGRect(x: 50, y: 200, width: 100, height: 30)
+        button.setTitle("Test Crash", for: [])
+        button.addTarget(self, action: #selector(self.crashButtonTapped(_:)), for: .touchUpInside)
+        view.addSubview(button)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,6 +61,13 @@ class WeatherViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
     }
 
+    @IBAction func crashButtonTapped(_ sender: AnyObject) {
+        let numbers = [0]
+        let _ = numbers[1]
+    }
+    
+    
+    
     //MARK: - IBActions
     @IBAction func searchButtonPressed(_ sender: UIBarButtonItem) {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: Constants.searchViewController) as? SearchViewController else { return }
@@ -174,6 +186,7 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == dailyCollectionView {
             return weather.dailyWeatherObject?.icon.count ?? 8
+
         } else {
             return weather.dailyWeatherObject?.hourly?.temp.count ?? 24
         }

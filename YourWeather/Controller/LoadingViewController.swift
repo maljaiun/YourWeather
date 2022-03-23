@@ -24,8 +24,9 @@ class LoadingViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         checkFirstStartStatus()
+        
     }
-    
+  
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         activityIndicator.startAnimating()

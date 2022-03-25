@@ -34,14 +34,14 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var dailyCollectionView: UICollectionView!
-
+    
     //MARK: - vars/lets
     private let refreshControl = UIRefreshControl()
     private let locationManager = CLLocationManager()
     var weather = WeatherModel()
-
+    
     //MARK: - lyfecycle
- 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         UserDefaults.standard.set(true, forKey: keys.firstStart)
@@ -60,7 +60,7 @@ class WeatherViewController: UIViewController {
         updateScrollView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
     }
-
+    
     @IBAction func crashButtonTapped(_ sender: AnyObject) {
         let numbers = [0]
         let _ = numbers[1]
@@ -96,19 +96,19 @@ class WeatherViewController: UIViewController {
     }
     
     private func addWeatherSettings() {
-        guard let currentWeatherObject = self.weather.currentWeatherObject else { return }
-        self.navigationBar.title = currentWeatherObject.name
-        self.currentTime.text = weather.dateFormater(date: currentWeatherObject.dt, dateFormat: "HH:mm E")
-        self.currentTemperature.text = "\(currentWeatherObject.temp.doubleToString())°"
-        self.currentFeelingWeather.text = "\(currentWeatherObject.feels_like.doubleToString())°"
-        self.currentMaxWeather.text = "\(currentWeatherObject.temp_max.doubleToString())°"
-        self.currentMinWeather.text = "\(currentWeatherObject.temp_min.doubleToString())°"
-        self.currentImageWeather.image = UIImage(named: "\(currentWeatherObject.weather?.icon ?? "01n")-1.png")
-        self.currentDescription.text = currentWeatherObject.weather?.description.capitalizingFirstLetter()
-        self.currentPressure.text = "\(currentWeatherObject.pressurre.doubleToString())мм"
-        self.currentWindSpeed.text = "\(currentWeatherObject.speed)м/с"
-        self.currentHumidity.text = "\(currentWeatherObject.humidity.doubleToString())%"
-        self.backgroundImageView.image = UIImage(named: "\(currentWeatherObject.weather?.icon ?? "01n")-2")
+        guard let currentWeather = self.weather.currentWeatherObject else { return }
+        self.navigationBar.title = currentWeather.name
+        self.currentTime.text = weather.dateFormater(date: currentWeather.dt, dateFormat: "HH:mm E")
+        self.currentTemperature.text = "\(currentWeather.temp.doubleToString())°"
+        self.currentFeelingWeather.text = "\(currentWeather.feels_like.doubleToString())°"
+        self.currentMaxWeather.text = "\(currentWeather.temp_max.doubleToString())°"
+        self.currentMinWeather.text = "\(currentWeather.temp_min.doubleToString())°"
+        self.currentImageWeather.image = UIImage(named: "\(currentWeather.weather?.icon ?? "01n")-1.png")
+        self.currentDescription.text = currentWeather.weather?.description.capitalizingFirstLetter()
+        self.currentPressure.text = "\(currentWeather.pressurre.doubleToString())мм"
+        self.currentWindSpeed.text = "\(currentWeather.speed)м/с"
+        self.currentHumidity.text = "\(currentWeather.humidity.doubleToString())%"
+        self.backgroundImageView.image = UIImage(named: "\(currentWeather.weather?.icon ?? "01n")-2")
         self.backgroundImageAnimate()
     }
     
@@ -186,7 +186,7 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == dailyCollectionView {
             return weather.dailyWeatherObject?.icon.count ?? 8
-
+            
         } else {
             return weather.dailyWeatherObject?.hourly?.temp.count ?? 24
         }
@@ -194,7 +194,7 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if collectionView == hourlyCollectionView {          
+        if collectionView == hourlyCollectionView {
             guard let hourlyCell = hourlyCollectionView.dequeueReusableCell(withReuseIdentifier: Constants.cells.hourlyCollectionViewCell, for: indexPath) as? HourlyCollectionViewCell
             else { return UICollectionViewCell()}
             

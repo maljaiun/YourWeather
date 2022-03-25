@@ -15,9 +15,8 @@ class LoadingViewController: UIViewController{
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     //MARK: - vars/lets
-    let monitor = NWPathMonitor()
-    let locationManager = CLLocationManager()
-    
+    private let monitor = NWPathMonitor()
+    private let locationManager = CLLocationManager()
     var weather = WeatherModel()
     
     //MARK: - lyfecycle

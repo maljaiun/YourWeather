@@ -139,6 +139,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
         if filteredCities.isEmpty, let lat = lat ,let lon = lon {
             self.delegate?.setLocation(lat, lon)
             dismiss(animated: true)

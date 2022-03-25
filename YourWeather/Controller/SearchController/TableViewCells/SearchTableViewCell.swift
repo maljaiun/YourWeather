@@ -13,8 +13,8 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var countryName: UILabel!
     
     func configure(filteredCities: CityObject) {
-        self.cityName.text = filteredCities.name
-        self.countryName.text = filteredCities.country
+        cityName.text = filteredCities.name
+        countryName.text = filteredCities.country
         self.backgroundColor = .clear
     }
 

@@ -3,3 +3,7 @@
 /YourWeather.xcodeproj/xcuserdata/kirillsytkov.xcuserdatad/xcdebugger
 /YourWeather.xcodeproj/xcuserdata/kirillsytkov.xcuserdatad/xcschemes/xcschememanagement.plist
 .DS_Store
+/YourWeather/.DS_Store
+/Pods/.DS_Store
+/Pods/Target Support Files/.DS_Store
+/YourWeather.xcworkspace/xcuserdata/kirillsytkov.xcuserdatad/UserInterfaceState.xcuserstate

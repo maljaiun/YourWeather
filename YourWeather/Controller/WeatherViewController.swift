@@ -121,19 +121,20 @@ class WeatherViewController: UIViewController {
     
     private func addWeather() {
         if weather.lat != nil && weather.lon != nil {
-            addWeatherSettings()
-            reloadAllCollectionView()
+            reloadWeatherView()
         } else {
             weather.noGeolocationWeather {
-                self.addWeatherSettings()
-                self.reloadAllCollectionView()
+                self.reloadWeatherView()
             }
         }
     }
-    private func reloadAllCollectionView() {
+    
+    private func reloadWeatherView() {
+        addWeatherSettings()
         dailyCollectionView.reloadData()
         hourlyCollectionView.reloadData()
     }
+    
     // Pull to refresh
     @objc private func refreshWeatherData(_ sender: Any) {
         fetchWeatherData()
@@ -141,8 +142,7 @@ class WeatherViewController: UIViewController {
     
     private func fetchWeatherData() {
         weather.withGeolocationWeather {
-            self.addWeatherSettings()
-            self.reloadAllCollectionView()
+            self.reloadWeatherView()
         }
         updateScrollView.refreshControl!.endRefreshing()
     }
@@ -159,8 +159,7 @@ extension WeatherViewController: SearchViewControllerDelegate {
         weather.lat = lat
         weather.lon = lon
         weather.withGeolocationWeather {
-            self.addWeatherSettings()
-            self.reloadAllCollectionView()
+            self.reloadWeatherView()
         }
     }
 }
@@ -184,9 +183,9 @@ extension WeatherViewController: CLLocationManagerDelegate{
 //collection View
 extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         if collectionView == dailyCollectionView {
             return weather.dailyWeatherObject?.icon.count ?? 8
-            
         } else {
             return weather.dailyWeatherObject?.hourly?.temp.count ?? 24
         }

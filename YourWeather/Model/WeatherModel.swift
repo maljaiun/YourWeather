@@ -35,6 +35,7 @@ class WeatherModel {
             }
         }
     }
+    
     func dateFormater(date: TimeInterval, dateFormat: String) -> String {
         let dateText = Date(timeIntervalSince1970: date)
         let formater = DateFormatter()

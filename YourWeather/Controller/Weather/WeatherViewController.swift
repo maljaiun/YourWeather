@@ -35,54 +35,48 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var dailyCollectionView: UICollectionView!
     
+    
     //MARK: - vars/lets
     private let refreshControl = UIRefreshControl()
     private let locationManager = CLLocationManager()
-    var weather = WeatherModel()
     
+    var viewModel = WeatherViewModel()
+
     //MARK: - lyfecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         UserDefaults.standard.set(true, forKey: keys.firstStart)
-        mainSettings()
+        bind()
         refreshControllSettings()
-        let button = UIButton(type: .roundedRect)
-        button.frame = CGRect(x: 50, y: 200, width: 100, height: 30)
-        button.setTitle("Test Crash", for: [])
-        button.addTarget(self, action: #selector(self.crashButtonTapped(_:)), for: .touchUpInside)
-        view.addSubview(button)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addWeather()
+        updateUI()
+        viewModel.addWeatherSettings()
+        backgroundImageAnimate()
         updateScrollView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
     }
-    
-    @IBAction func crashButtonTapped(_ sender: AnyObject) {
-        let numbers = [0]
-        let _ = numbers[1]
-    }
-    
-    
+ 
     
     //MARK: - IBActions
     @IBAction func searchButtonPressed(_ sender: UIBarButtonItem) {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: Constants.searchViewController) as? SearchViewController else { return }
-        controller.delegate = self
+        controller.viewModel.delegate = self.viewModel
         controller.modalPresentationStyle = .overFullScreen
         present(controller, animated: true, completion: nil)
     }
     
+    
     //MARK: - flow func
     // UISettings
-    private func mainSettings() {
+    private func updateUI() {
         self.shadowConteinerView.layer.cornerRadius = self.shadowConteinerView.frame.height / 2
         self.shadowConteinerView.dropShadow()
         self.actualWeatherView.layer.cornerRadius = self.actualWeatherView.frame.height / 2
         self.actualWeatherView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        self.navigationBar.hidesBackButton = true
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         self.currentImageWeather.contentMode = .scaleAspectFit
@@ -95,44 +89,17 @@ class WeatherViewController: UIViewController {
         self.humidityLabel.text = "Humidity".localize
     }
     
-    private func addWeatherSettings() {
-        guard let currentWeather = self.weather.currentWeatherObject else { return }
-        self.navigationBar.title = currentWeather.name
-        self.currentTime.text = weather.dateFormater(date: currentWeather.dt, dateFormat: "HH:mm E")
-        self.currentTemperature.text = "\(currentWeather.temp.doubleToString())°"
-        self.currentFeelingWeather.text = "\(currentWeather.feels_like.doubleToString())°"
-        self.currentMaxWeather.text = "\(currentWeather.temp_max.doubleToString())°"
-        self.currentMinWeather.text = "\(currentWeather.temp_min.doubleToString())°"
-        self.currentImageWeather.image = UIImage(named: "\(currentWeather.weather?.icon ?? "01n")-1.png")
-        self.currentDescription.text = currentWeather.weather?.description.capitalizingFirstLetter()
-        self.currentPressure.text = "\(currentWeather.pressurre.doubleToString())мм"
-        self.currentWindSpeed.text = "\(currentWeather.speed)м/с"
-        self.currentHumidity.text = "\(currentWeather.humidity.doubleToString())%"
-        self.backgroundImageView.image = UIImage(named: "\(currentWeather.weather?.icon ?? "01n")-2")
-        self.backgroundImageAnimate()
-    }
-    
     private func backgroundImageAnimate() {
         self.backgroundImageView.frame.origin.x = 0
         UIView.animate(withDuration: 10, delay: 0, options: [.repeat, .autoreverse], animations: {
             self.backgroundImageView.frame.origin.x -= 100
         }, completion: nil)
     }
-    
-    private func addWeather() {
-        if weather.lat != nil && weather.lon != nil {
-            reloadWeatherView()
-        } else {
-            weather.noGeolocationWeather {
-                self.reloadWeatherView()
-            }
-        }
-    }
-    
+
     private func reloadWeatherView() {
-        addWeatherSettings()
-        dailyCollectionView.reloadData()
-        hourlyCollectionView.reloadData()
+        viewModel.addWeatherSettings()
+        self.backgroundImageAnimate()
+
     }
     
     // Pull to refresh
@@ -141,29 +108,62 @@ class WeatherViewController: UIViewController {
     }
     
     private func fetchWeatherData() {
-        weather.withGeolocationWeather {
-            self.reloadWeatherView()
-        }
+        viewModel.getWeather()
         updateScrollView.refreshControl!.endRefreshing()
     }
     
     private func refreshControllSettings() {
         refreshControl.tintColor = .white
     }
-}
-
-//MARK: - Extensions
-//Delegate SearchViewController
-extension WeatherViewController: SearchViewControllerDelegate {
-    func setLocation(_ lat: Double, _ lon: Double) {
-        weather.lat = lat
-        weather.lon = lon
-        weather.withGeolocationWeather {
-            self.reloadWeatherView()
+    
+    private func bind() {
+        self.viewModel.navigationBarTitle.bind { [weak self] navigationBarTitle in
+            self?.navigationBar.title = navigationBarTitle
+        }
+        self.viewModel.currentPressure.bind { [weak self] currentPressure in
+            self?.currentPressure.text = currentPressure
+        }
+        self.viewModel.currentHumidity.bind { [weak self] currentHumidity in
+            self?.currentHumidity.text = currentHumidity
+        }
+        self.viewModel.currentDescription.bind { [weak self] currentDescription in
+            self?.currentDescription.text = currentDescription
+        }
+        self.viewModel.currentTemperature.bind { [weak self] currentTemperature in
+            self?.currentTemperature.text = currentTemperature
+        }
+        self.viewModel.currentFeelingWeather.bind { [weak self] currentFeelingWeather in
+            self?.currentFeelingWeather.text = currentFeelingWeather
+        }
+        self.viewModel.currentImageWeather.bind { [weak self] currentImageWeather in
+            self?.currentImageWeather.image = currentImageWeather
+        }
+        self.viewModel.currentMinWeather.bind { [weak self] currentMinWeather in
+            self?.currentMinWeather.text = currentMinWeather
+        }
+        self.viewModel.currentMaxWeather.bind { [weak self] currentMaxWeather in
+            self?.currentMaxWeather.text = currentMaxWeather
+        }
+        self.viewModel.currentWindSpeed.bind { [weak self] currentWindSpeed in
+            self?.currentWindSpeed.text = currentWindSpeed
+        }
+        self.viewModel.currentTime.bind { [weak self] currentTime in
+            self?.currentTime.text = currentTime
+        }
+        self.viewModel.backgroundImageView.bind { [weak self] backgroundImageView in
+            self?.backgroundImageView.image = backgroundImageView
+        }
+        self.viewModel.reloadTableView = {
+            DispatchQueue.main.async {
+                self.dailyCollectionView.reloadData()
+                self.hourlyCollectionView.reloadData()
+            }
         }
     }
 }
 
+
+//MARK: - Extensions
 // CLLocationManagerDelegate
 extension WeatherViewController: CLLocationManagerDelegate{
     private func actualLocation() {
@@ -174,8 +174,7 @@ extension WeatherViewController: CLLocationManagerDelegate{
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = manager.location?.coordinate else { return }
-        weather.lat = location.latitude
-        weather.lon = location.longitude
+        viewModel.getLocation(location)
         locationManager.stopUpdatingLocation()
     }
 }
@@ -185,37 +184,33 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if collectionView == dailyCollectionView {
-            return weather.dailyWeatherObject?.icon.count ?? 8
+            return viewModel.numberOfDailyCells
         } else {
-            return weather.dailyWeatherObject?.hourly?.temp.count ?? 24
+            return viewModel.numberOfHourlyCells
         }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if collectionView == hourlyCollectionView {
+            
             guard let hourlyCell = hourlyCollectionView.dequeueReusableCell(withReuseIdentifier: Constants.cells.hourlyCollectionViewCell, for: indexPath) as? HourlyCollectionViewCell
             else { return UICollectionViewCell()}
             
-            if let dailyWeatherObject = weather.dailyWeatherObject {
-                hourlyCell.configure(dailyWeatherObject: dailyWeatherObject, indexPath: indexPath.item)
-                hourlyCell.hourlyTime.text = weather.dateFormater(date: dailyWeatherObject.hourly?.dt[indexPath.item] ?? 0, dateFormat: "HH:mm")
-            }
-            return hourlyCell
+            return viewModel.hourlyConfigureCell(cell: hourlyCell, indexPath: indexPath)
             
         } else {
+            
             guard let dailyCell = dailyCollectionView.dequeueReusableCell(withReuseIdentifier: Constants.cells.dailyCollectionViewCell, for: indexPath) as? DailyCollectionViewCell
             else { return UICollectionViewCell ()}
             
-            if let dailyWeatherObject = weather.dailyWeatherObject {
-                dailyCell.configure(dailyWeatherObject: dailyWeatherObject, indexPath: indexPath.item)
-                dailyCell.dailyDate.text = weather.dateFormater(date: dailyWeatherObject.dt[indexPath.item], dateFormat: "E d MMM")
-            }
-            return dailyCell
+            return viewModel.dailyConfigureCell(cell: dailyCell, indexPath: indexPath)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         if collectionView == dailyCollectionView {
             return CGSize(width: 128, height: 50)
         } else {

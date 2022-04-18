@@ -776,9 +776,6 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="-" id="gEI-XR-abP">
-                        <barButtonItem key="leftBarButtonItem" title="Item" style="done" id="gjn-MZ-sFZ">
-                            <imageReference key="image" image="map.circle" catalog="system" symbolScale="large"/>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="search" id="NP8-MA-bRp">
                             <connections>
                                 <action selector="searchButtonPressed:" destination="akj-Pi-8c3" id="vIh-K3-axh"/>
@@ -971,7 +968,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kx6-J7-jbx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1582.608695652174" y="1105.5803571428571"/>
+            <point key="canvasLocation" x="1643" y="416"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ejd-NF-uq8">
@@ -998,7 +995,6 @@
         <image name="chevron.left" catalog="system" width="96" height="128"/>
         <image name="cloudIcon" width="897" height="897"/>
         <image name="location.circle.fill" catalog="system" width="128" height="121"/>
-        <image name="map.circle" catalog="system" width="128" height="121"/>
         <image name="whiteLine" width="1024" height="1024"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

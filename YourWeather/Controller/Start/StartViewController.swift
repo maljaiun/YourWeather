@@ -1,14 +1,7 @@
-//
-//  StartViewController.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 17.02.2022.
-//
 
 import UIKit
 import CoreLocation
 import AVKit
-import AVFoundation
 
 class StartViewController: UIViewController{
 
@@ -21,7 +14,7 @@ class StartViewController: UIViewController{
     
     //MARK: - vars/lets
     let locationManager = CLLocationManager()
-    var weather = WeatherModel()
+    var viewModel = StartViewModel()
     
     //MARK: - lyfecycle
     override func viewDidLoad() {
@@ -32,19 +25,22 @@ class StartViewController: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         playVideoBackground()
-        mainSettings()
+        updateUI()
     }
     
     //MARK: - IBActions
     @IBAction func continueButtonPressed(_ sender: UIButton) {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: Constants.weatherViewController) as? WeatherViewController else { return }
-        controller.modalPresentationStyle = .fullScreen
-        controller.weather = weather
-        navigationController?.pushViewController(controller, animated: true)
+        
+        viewModel.getWeather {
+            controller.modalPresentationStyle = .fullScreen
+            controller.viewModel.weather = self.viewModel.weather
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     //MARK: - flow func
-    private func mainSettings() {
+    private func updateUI() {
         self.continueButton.addButtonRadius()
         self.navigationItem.setHidesBackButton(true, animated: true)
         self.greetingsLabel.text = "Welcome!".localize
@@ -66,7 +62,6 @@ class StartViewController: UIViewController{
         
         videoLayer.videoGravity = .resizeAspectFill
         player.volume = 0
-
         player.actionAtItemEnd = .none
         videoLayer.frame = self.view.layer.bounds
         self.view.backgroundColor = .clear
@@ -78,17 +73,6 @@ class StartViewController: UIViewController{
         player.play()
     }
     
-    private func addWeather() {
-        if weather.lat != nil && weather.lon != nil {
-            weather.withGeolocationWeather {
-            }
-        } else {
-            weather.noGeolocationWeather {
-                
-            }
-        }
-    }
-
 }
 
 extension StartViewController:  CLLocationManagerDelegate  {
@@ -101,9 +85,7 @@ extension StartViewController:  CLLocationManagerDelegate  {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = manager.location?.coordinate else { return }
-        weather.lat = location.latitude
-        weather.lon = location.longitude
+        viewModel.saveLocation(location)
         locationManager.stopUpdatingLocation()
-        addWeather()
     }
 }

@@ -19,6 +19,8 @@ class LoadingViewController: UIViewController{
     private let locationManager = CLLocationManager()
     var weather = WeatherModel()
     
+    var viewModel = LoadingViewModel()
+    
     //MARK: - lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,7 +102,7 @@ class LoadingViewController: UIViewController{
     
     private func loadWeatherController() {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: Constants.weatherViewController) as? WeatherViewController else { return }
-        controller.weather = weather
+        controller.viewModel.weather = weather
         activityIndicator.stopAnimating()
         self.navigationController?.pushViewController(controller, animated: true)
     }

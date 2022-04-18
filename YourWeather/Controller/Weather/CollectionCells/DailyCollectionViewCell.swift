@@ -23,4 +23,5 @@ class DailyCollectionViewCell: UICollectionViewCell {
         dailyMaxTemp.text = "\(dailyWeatherObject.max[indexPath].doubleToString())°"
     }
     
+    
 }

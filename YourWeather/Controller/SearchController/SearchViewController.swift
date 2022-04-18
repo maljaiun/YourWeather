@@ -1,17 +1,6 @@
-//
-//  SearchViewController.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 21.02.2022.
-//
 
 import UIKit
 import CoreLocation
-
-protocol SearchViewControllerDelegate: AnyObject {
-    func setLocation(_ lat: Double, _ lon: Double)
-    
-}
 
 class SearchViewController: UIViewController {
     
@@ -20,25 +9,21 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var searchNavigationBar: UINavigationBar!
     
     //MARK: - vars/lets
-    weak var delegate: SearchViewControllerDelegate?
-    
-    private var cities: [CityObject]?
-    private var filteredCities = [CityObject]()
     private let searchController = UISearchController(searchResultsController: nil)
     private let locationManager = CLLocationManager()
-    private var lat: Double?
-    private var lon: Double?
+
     
+    var viewModel = SearchViewModel()
     //MARK: - lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         actualLocation()
-        getCity()
+        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        mainSettings()
+        updateUI()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -51,7 +36,8 @@ class SearchViewController: UIViewController {
     }
     
     //MARK: - flow func
-    private func mainSettings() {
+    
+    private func updateUI() {
         self.view.backgroundColor = .clear
         self.searchNavigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         self.searchNavigationBar.topItem?.searchController = searchController
@@ -64,13 +50,11 @@ class SearchViewController: UIViewController {
         self.searchNavigationBar.topItem?.title = "Location".localize
         
     }
-    
-    private func getCity() {
-        DispatchQueue.global().async {
-            CityManager.shared.getCity { [weak self] newCity in
-                self?.cities = newCity
-            }
+    private func bind() {
+        viewModel.reloadTablView = {
+            DispatchQueue.main.async { self.searchTableView.reloadData() }
         }
+        viewModel.getCity()
     }
 }
 
@@ -85,51 +69,42 @@ extension SearchViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = manager.location?.coordinate else { return }
-        self.lat = location.latitude
-        self.lon = location.longitude
+        viewModel.getLocation(location: location)
         locationManager.stopUpdatingLocation()
     }
 }
-
+//MARK: - Extensions
+// Search delegate
 extension SearchViewController: UISearchResultsUpdating {
+    
     func updateSearchResults(for searchController: UISearchController) {
         
-        guard let text = searchController.searchBar.text,
-              let cities = cities else { return }
-        
-        filteredCities = cities.filter({ (city: CityObject) in
-            if text.count > 2 && city.name.lowercased().contains(text.lowercased()) {
-                return true
-            }
-            return false
-        })
-        filteredCities.sort(by: {$0.name.count < $1.name.count})
-        searchTableView.reloadData()
+        guard let text = searchController.searchBar.text else { return }
+        viewModel.searchCity(text: text)
     }
     
 }
 
+// TableView delegate
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if filteredCities.count > 20 {
-            return 20
-        } else if filteredCities.count > 0 {
-            return filteredCities.count
-        } else {
-            return 1
-        }
+         return viewModel.numberOfCell
     }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if filteredCities.isEmpty {
+         
+        if viewModel.filteredCityIsEmpty() {
+            
             guard let locationCell = tableView.dequeueReusableCell(withIdentifier: Constants.cells.selfLocationTableViewCell, for: indexPath) as? SelfLocationTableViewCell else { return UITableViewCell() }
             locationCell.configure()
             return locationCell
+            
         } else {
+            
             guard let searchCell = tableView.dequeueReusableCell(withIdentifier: Constants.cells.searchTableViewCell, for: indexPath) as? SearchTableViewCell else { return UITableViewCell() }
-            searchCell.configure(filteredCities: filteredCities[indexPath.row])
+            let cellVieModel = viewModel.getCellViewModel(at: indexPath)
+            searchCell.configure(filteredCities: cellVieModel)
             return searchCell
+            
         }
     }
     
@@ -140,14 +115,9 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if filteredCities.isEmpty, let lat = lat ,let lon = lon {
-            self.delegate?.setLocation(lat, lon)
-            dismiss(animated: true)
-        } else {
-            self.delegate?.setLocation(filteredCities[indexPath.row].lat, filteredCities[indexPath.row].lon)
-            dismiss(animated: true)
-        }
-        
+        viewModel.didSelectRow(at: indexPath)
+        dismiss(animated: true)
+
     }
 }
 

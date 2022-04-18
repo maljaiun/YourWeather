@@ -18,4 +18,5 @@ struct Constants {
         static let hourlyCollectionViewCell = "HourlyCollectionViewCell"
         static let dailyCollectionViewCell = "DailyCollectionViewCell"
     }
+    
 }

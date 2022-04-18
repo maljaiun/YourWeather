@@ -1,9 +1,3 @@
-//
-//  SelfLocationTableViewCell.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 28.02.2022.
-//
 
 import UIKit
 

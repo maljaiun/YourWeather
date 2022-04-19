@@ -98,6 +98,7 @@ class WeatherViewModel {
         cell.hourlyTime.text = dateFormater(date: (weather.dailyWeatherObject?.hourly?.dt[indexPath.row])!, dateFormat: "HH:mm")
         return cell
     }
+    
 }
 
 extension WeatherViewModel: SearchViewModelDelegate {

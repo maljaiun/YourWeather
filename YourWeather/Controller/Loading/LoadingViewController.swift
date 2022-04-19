@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import CoreLocation
-import Network
 
 class LoadingViewController: UIViewController{
     
@@ -15,115 +13,48 @@ class LoadingViewController: UIViewController{
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     //MARK: - vars/lets
-    private let monitor = NWPathMonitor()
-    private let locationManager = CLLocationManager()
-    var weather = WeatherModel()
-    
     var viewModel = LoadingViewModel()
     
     //MARK: - lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        checkFirstStartStatus()
-        
+        bind()
     }
-  
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        activityIndicator.startAnimating()
     }
     
     //MARK: - flow func
-    private func checkFirstStartStatus() {
-        if  UserDefaults.standard.value(forKey: keys.firstStart) == nil {
-            guard let controller = storyboard?.instantiateViewController(withIdentifier: Constants.startViewController) as? StartViewController else { return }
-            navigationController?.pushViewController(controller, animated: false)
-        } else {
-            checkNetwork()
-        }
-    }
-    
-    // internet connection
-    private func checkNetwork(){
-        monitor.pathUpdateHandler = { path in
-            if path.status == .satisfied {
-                self.checkLocationStatusEnable()
-            } else {
-                DispatchQueue.main.async {
-                    self.addAlert()
-                }
+    private func bind() {
+        viewModel.showLoading = {
+            DispatchQueue.main.async {
+                self.activityIndicator.startAnimating()
             }
         }
-        let queue = DispatchQueue(label: "Monitor")
-        monitor.start(queue: queue)
-    }
-    private func addAlert() {
-        let alert = UIAlertController(title: "Нет соединения с интернетом", message: "Для корректного отображения данных требуется доступ к сети интернет", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ок", style: .cancel, handler: { _ in
-            self.loadWeatherController()
-        }))
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    //check Location Status
-    private func checkLocationStatusEnable() {
-        //как это правильно работает?
-        if CLLocationManager.locationServicesEnabled() {
-            switch locationManager.authorizationStatus {
-            case .notDetermined:
-                self.actualLocation()
-                break
-            case  .restricted, .denied:
-                DispatchQueue.main.async {
-                    self.addWeather()
-                }
-            case .authorizedAlways, .authorizedWhenInUse:
-                self.actualLocation()
-            @unknown default:
-                fatalError()
-            }
-            
-        } else {
-            print("Location services are not enabled")
-        }
-    }
-    
-    private func addWeather() {
-        if weather.lat != nil && weather.lon != nil {
-            self.weather.withGeolocationWeather {
-                self.loadWeatherController()
-            }
-        } else {
-            self.weather.noGeolocationWeather {
-                self.loadWeatherController()
+        viewModel.hideLoading = {
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
             }
         }
-    }
-    
-    private func loadWeatherController() {
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: Constants.weatherViewController) as? WeatherViewController else { return }
-        controller.viewModel.weather = weather
-        activityIndicator.stopAnimating()
-        self.navigationController?.pushViewController(controller, animated: true)
+        viewModel.showError = {
+            let alert = UIAlertController(title: "Нет соединения с интернетом", message: "Для корректного отображения данных требуется доступ к сети интернет", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ок", style: .cancel, handler: { _ in
+                self.viewModel.loadWeatherController?()
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+        viewModel.loadStartController = {
+            guard let controller = self.storyboard?.instantiateViewController(withIdentifier: Constants.startViewController) as? StartViewController else { return }
+            self.navigationController?.pushViewController(controller, animated: false)
+        }
+        viewModel.loadWeatherController = {
+            guard let controller = self.storyboard?.instantiateViewController(withIdentifier: Constants.weatherViewController) as? WeatherViewController else { return }
+            controller.viewModel.weather = self.viewModel.weather
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+        viewModel.checkFirstStart()
     }
 }
-//MARK: - Extensions
 
-//CLLocationManagerDelegate
-extension LoadingViewController:  CLLocationManagerDelegate  {
-    private func actualLocation() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-        locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = manager.location?.coordinate else { return }
-        self.weather.lat = location.latitude
-        self.weather.lon = location.longitude
-        locationManager.stopUpdatingLocation()
-        self.addWeather()
-    }
-}
 

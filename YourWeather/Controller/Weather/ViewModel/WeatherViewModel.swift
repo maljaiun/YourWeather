@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import CoreLocation
 
-class WeatherViewModel {
+class WeatherViewModel: NSObject {
     
     //MARK: - vars/lets
     var navigationBarTitle = Bindable<String?>(nil)
@@ -27,6 +27,7 @@ class WeatherViewModel {
     var currentWeatherObject = Bindable<CurrentWeatherObject?>(nil)
     var dailyCollectionView = Bindable<DailyWeatherObject?>(nil)
     
+    private let locationManager = CLLocationManager()
     var weather = WeatherModel()
     var reloadTableView: (()->())?
     var numberOfDailyCells: Int {
@@ -53,15 +54,9 @@ class WeatherViewModel {
         self.currentWindSpeed.value = "\(currentWeather.speed)м/с"
         self.currentHumidity.value = "\(currentWeather.humidity.doubleToString())%"
         self.backgroundImageView.value = UIImage(named: "\(currentWeather.weather?.icon ?? "01n")-2")
-        
         self.reloadTableView?()
     }
-    
-    func getLocation(_ location: CLLocationCoordinate2D ) {
-        weather.lat = location.latitude
-        weather.lon = location.longitude
-    }
-    
+
     func getWeather () {
         if weather.lat != nil && weather.lon != nil {
             weather.withGeolocationWeather {
@@ -75,7 +70,7 @@ class WeatherViewModel {
         }
     }
     
-    func dateFormater(date: TimeInterval, dateFormat: String) -> String {
+    private func dateFormater(date: TimeInterval, dateFormat: String) -> String {
         let dateText = Date(timeIntervalSince1970: date )
         let formater = DateFormatter()
         formater.timeZone = TimeZone(secondsFromGMT: weather.currentWeatherObject?.timezone ?? 0)
@@ -100,7 +95,7 @@ class WeatherViewModel {
     }
     
 }
-
+//MARK: - Extensions
 extension WeatherViewModel: SearchViewModelDelegate {
     func setLocation(_ lat: Double, _ lon: Double) {
         self.weather.lon = lon
@@ -109,3 +104,17 @@ extension WeatherViewModel: SearchViewModelDelegate {
     }
 }
 
+extension WeatherViewModel: CLLocationManagerDelegate{
+    private func actualLocation() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.startUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = manager.location?.coordinate else { return }
+        weather.lat = location.latitude
+        weather.lon = location.longitude
+        locationManager.stopUpdatingLocation()
+    }
+}

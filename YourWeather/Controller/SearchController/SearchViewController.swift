@@ -1,6 +1,5 @@
 
 import UIKit
-import CoreLocation
 
 class SearchViewController: UIViewController {
     
@@ -10,14 +9,11 @@ class SearchViewController: UIViewController {
     
     //MARK: - vars/lets
     private let searchController = UISearchController(searchResultsController: nil)
-    private let locationManager = CLLocationManager()
-
-    
     var viewModel = SearchViewModel()
+    
     //MARK: - lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        actualLocation()
         bind()
     }
     
@@ -58,21 +54,6 @@ class SearchViewController: UIViewController {
     }
 }
 
-//MARK: - Extensions
-
-extension SearchViewController: CLLocationManagerDelegate {
-    private func actualLocation() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-        locationManager.startUpdatingLocation()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = manager.location?.coordinate else { return }
-        viewModel.getLocation(location: location)
-        locationManager.stopUpdatingLocation()
-    }
-}
 //MARK: - Extensions
 // Search delegate
 extension SearchViewController: UISearchResultsUpdating {

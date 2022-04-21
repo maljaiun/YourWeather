@@ -6,10 +6,12 @@ protocol SearchViewModelDelegate: AnyObject {
     func setLocation(_ lat: Double, _ lon: Double)
 }
 
-class SearchViewModel {
+class SearchViewModel: NSObject {
     
+    //MARK: - vars/lets
     var reloadTablView: (()->())?
     weak var delegate: SearchViewModelDelegate?
+    private let locationManager = CLLocationManager()
     private var cities: [CityObject]?
     private var filteredCities = [CityObject]()
     private var lat: Double?
@@ -29,13 +31,9 @@ class SearchViewModel {
             return 1
         }
     }
-    
-    func getLocation(location: CLLocationCoordinate2D) {
-        self.lat = location.latitude
-        self.lon = location.longitude
-    }
-    
+    //MARK: - flow func
     func getCity() {
+        actualLocation()
         DispatchQueue.global().async {
             CityManager.shared.getCity { [weak self] newCity in
                 self?.cities = newCity
@@ -73,7 +71,7 @@ class SearchViewModel {
         filteredCities.isEmpty
     }
     
-    func createCell(){
+    private func createCell(){
         var viewModelCell = [SearchCellViewModel]()
         for city in filteredCities {
             viewModelCell.append(SearchCellViewModel(city: city.name, country: city.country))
@@ -88,3 +86,18 @@ struct SearchCellViewModel {
     var country: String
 }
 
+//MARK: - Extensions
+extension SearchViewModel: CLLocationManagerDelegate {
+    private func actualLocation() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.startUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = manager.location?.coordinate else { return }
+        lat = location.latitude
+        lon = location.longitude
+        locationManager.stopUpdatingLocation()
+    }
+}

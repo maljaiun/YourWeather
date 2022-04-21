@@ -12,7 +12,7 @@ class LoadingViewModel: NSObject {
     var loadStartController: (()->())?
     
     var weather = WeatherModel()
-    let locationManager = CLLocationManager()
+    private let locationManager = CLLocationManager()
     
     private let monitor = NWPathMonitor()
     
@@ -39,13 +39,7 @@ class LoadingViewModel: NSObject {
         monitor.start(queue: queue)
         
     }
-    
-    private func saveLocation(_ location: CLLocationCoordinate2D ) {
-        weather.lat = location.latitude
-        weather.lon = location.longitude
-        getWeather()
-    }
-    
+
     private func getWeather() {
         if weather.lat != nil && weather.lon != nil {
             self.weather.withGeolocationWeather {
@@ -68,13 +62,14 @@ extension LoadingViewModel:  CLLocationManagerDelegate  {
             self.locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
             self.locationManager.requestWhenInUseAuthorization()
             self.locationManager.startUpdatingLocation()
-            print("1")
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = manager.location?.coordinate else { return }
-        saveLocation(location)
+        weather.lat = location.latitude
+        weather.lon = location.longitude
         locationManager.stopUpdatingLocation()
+        getWeather()
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

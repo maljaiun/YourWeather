@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreLocation
 
 class WeatherViewController: UIViewController {
     
@@ -38,8 +37,6 @@ class WeatherViewController: UIViewController {
     
     //MARK: - vars/lets
     private let refreshControl = UIRefreshControl()
-    private let locationManager = CLLocationManager()
-    
     var viewModel = WeatherViewModel()
 
     //MARK: - lyfecycle
@@ -53,8 +50,6 @@ class WeatherViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateUI()
-        viewModel.addWeatherSettings()
-        backgroundImageAnimate()
         updateScrollView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
     }
@@ -87,6 +82,7 @@ class WeatherViewController: UIViewController {
         self.pressureLabel.text = "Pressure".localize
         self.windSpeedLabel.text = "Wind speed".localize
         self.humidityLabel.text = "Humidity".localize
+        self.backgroundImageAnimate()
     }
     
     private func backgroundImageAnimate() {
@@ -94,12 +90,6 @@ class WeatherViewController: UIViewController {
         UIView.animate(withDuration: 10, delay: 0, options: [.repeat, .autoreverse], animations: {
             self.backgroundImageView.frame.origin.x -= 100
         }, completion: nil)
-    }
-
-    private func reloadWeatherView() {
-        viewModel.addWeatherSettings()
-        self.backgroundImageAnimate()
-
     }
     
     // Pull to refresh
@@ -159,26 +149,12 @@ class WeatherViewController: UIViewController {
                 self.hourlyCollectionView.reloadData()
             }
         }
+        viewModel.addWeatherSettings()
     }
 }
 
 
 //MARK: - Extensions
-// CLLocationManagerDelegate
-extension WeatherViewController: CLLocationManagerDelegate{
-    private func actualLocation() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-        locationManager.startUpdatingLocation()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = manager.location?.coordinate else { return }
-        viewModel.getLocation(location)
-        locationManager.stopUpdatingLocation()
-    }
-}
-
 //collection View
 extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

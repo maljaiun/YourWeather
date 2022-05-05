@@ -12,7 +12,6 @@ class SearchViewModel: NSObject {
     var reloadTablView: (()->())?
     weak var delegate: SearchViewModelDelegate?
     private let locationManager = CLLocationManager()
-    private var cities: [CityObject]?
     private var filteredCities = [CityObject]()
     private var lat: Double?
     private var lon: Double?
@@ -31,27 +30,25 @@ class SearchViewModel: NSObject {
             return 1
         }
     }
+    
     //MARK: - flow func
     func getCity() {
         actualLocation()
-        DispatchQueue.global().async {
-            CityManager.shared.getCity { [weak self] newCity in
-                self?.cities = newCity
-                self?.createCell()
-            }
-        }
     }
     
     func didSelectRow(at indexPath: IndexPath) {
         if filteredCities.isEmpty {
-            self.delegate?.setLocation(self.lat!, self.lon!)
+            if locationManager.authorizationStatus != .denied {
+                self.delegate?.setLocation(self.lat!, self.lon!)
+            } 
         } else {
-            self.delegate?.setLocation(filteredCities[indexPath.row].lat, filteredCities[indexPath.row].lon)
+            self.delegate?.setLocation(filteredCities[indexPath.row].coord.lat, filteredCities[indexPath.row].coord.lon)
         }
     }
     
     func searchCity(text: String) {
-        guard let cities = cities else { return }
+        guard let cities = CityModel.shared.cities else { return }
+        
         filteredCities = cities.filter({ (city: CityObject) in
             if text.count > 2 && city.name.lowercased().contains(text.lowercased()) {
                 return true

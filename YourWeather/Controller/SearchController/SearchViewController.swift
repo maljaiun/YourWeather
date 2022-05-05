@@ -10,10 +10,12 @@ class SearchViewController: UIViewController {
     //MARK: - vars/lets
     private let searchController = UISearchController(searchResultsController: nil)
     var viewModel = SearchViewModel()
+    var searchVC:SearchViewController?
     
     //MARK: - lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchVC = self
         bind()
     }
     
@@ -25,10 +27,10 @@ class SearchViewController: UIViewController {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.tintColor = .white
     }
-    
+
     //MARK: - IBActions
     @IBAction func backButtonPressed(_ sender: UIButton) {
-        dismiss(animated: true)
+        self.dismiss(animated: true)
     }
     
     //MARK: - flow func
@@ -47,7 +49,7 @@ class SearchViewController: UIViewController {
         
     }
     private func bind() {
-        viewModel.reloadTablView = {
+        viewModel.reloadTablView = { 
             DispatchQueue.main.async { self.searchTableView.reloadData() }
         }
         viewModel.getCity()
@@ -68,9 +70,11 @@ extension SearchViewController: UISearchResultsUpdating {
 
 // TableView delegate
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
          return viewModel.numberOfCell
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          
         if viewModel.filteredCityIsEmpty() {
@@ -97,7 +101,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         viewModel.didSelectRow(at: indexPath)
-        dismiss(animated: true)
+        self.dismiss(animated: true)
 
     }
 }

@@ -3,6 +3,10 @@ import Foundation
 import Network
 import CoreLocation
 
+enum keys {
+    static let firstStart = "firstStart"
+}
+
 class LoadingViewModel: NSObject {
     
     var showLoading: (()->())?
@@ -10,14 +14,14 @@ class LoadingViewModel: NSObject {
     var showError: (()->())?
     var loadWeatherController: (()->())?
     var loadStartController: (()->())?
-    
     var weather = WeatherModel()
-    private let locationManager = CLLocationManager()
     
+    private let locationManager = CLLocationManager()
     private let monitor = NWPathMonitor()
     
     func checkFirstStart(){
         showLoading?()
+        CityModel.shared.getCity()
         if  UserDefaults.standard.value(forKey: keys.firstStart) == nil {
             loadStartController?()
         } else {
@@ -29,6 +33,9 @@ class LoadingViewModel: NSObject {
         monitor.pathUpdateHandler = { path in
             if path.status == .satisfied {
                 self.actualLocation()
+                if self.locationManager.authorizationStatus == .denied {
+                    self.getWeather()
+                }
             } else {
                 DispatchQueue.main.async {
                     self.showError?()
@@ -88,7 +95,7 @@ extension LoadingViewModel:  CLLocationManagerDelegate  {
                 break
             }
         } else {
-            print("Location services are not enabled")
+           debugPrint("Location services are not enabled")
         }
     }
 }

@@ -34,7 +34,6 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var dailyCollectionView: UICollectionView!
     
-    
     //MARK: - vars/lets
     private let refreshControl = UIRefreshControl()
     var viewModel = WeatherViewModel()
@@ -68,9 +67,9 @@ class WeatherViewController: UIViewController {
     // UISettings
     private func updateUI() {
         self.shadowConteinerView.layer.cornerRadius = self.shadowConteinerView.frame.height / 2
-        self.shadowConteinerView.dropShadow()
         self.actualWeatherView.layer.cornerRadius = self.actualWeatherView.frame.height / 2
         self.actualWeatherView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        self.actualWeatherView.alpha = 0
         self.navigationBar.hidesBackButton = true
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
@@ -83,6 +82,7 @@ class WeatherViewController: UIViewController {
         self.windSpeedLabel.text = "Wind speed".localize
         self.humidityLabel.text = "Humidity".localize
         self.backgroundImageAnimate()
+        self.actualWeatherAnimate()
     }
     
     private func backgroundImageAnimate() {
@@ -90,6 +90,23 @@ class WeatherViewController: UIViewController {
         UIView.animate(withDuration: 10, delay: 0, options: [.repeat, .autoreverse], animations: {
             self.backgroundImageView.frame.origin.x -= 100
         }, completion: nil)
+    }
+    private func actualWeatherAnimate() {
+        UIView.animate(withDuration: 2, delay: 0, options: [.repeat, .autoreverse], animations: {
+            self.currentImageWeather.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        }, completion: nil)
+        
+        UIView.animate(withDuration: 0.8) {
+            self.actualWeatherView.alpha = 1
+            self.shadowConteinerView.dropShadow()
+        }
+        
+        UIView.animate(withDuration: 1, delay: 0, options: [.autoreverse], animations: {
+            self.actualWeatherView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+        }) { _ in
+            self.actualWeatherView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }
+        
     }
     
     // Pull to refresh
@@ -143,7 +160,7 @@ class WeatherViewController: UIViewController {
         self.viewModel.backgroundImageView.bind { [weak self] backgroundImageView in
             self?.backgroundImageView.image = backgroundImageView
         }
-        self.viewModel.reloadTableView = {
+        self.viewModel.reloadTableView = { 
             DispatchQueue.main.async {
                 self.dailyCollectionView.reloadData()
                 self.hourlyCollectionView.reloadData()

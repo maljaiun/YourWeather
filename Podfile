@@ -8,5 +8,6 @@ target 'YourWeather' do
   
   # Pods for YourWeather
   pod 'Firebase/Crashlytics'
+  pod 'lottie-ios'
   
 end

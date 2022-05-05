@@ -6,35 +6,40 @@
 //
 
 import UIKit
+import Lottie
 
 class LoadingViewController: UIViewController{
     
     //MARK: - IBOutlets
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     //MARK: - vars/lets
-    var viewModel = LoadingViewModel()
+    private var animationView: AnimationView?
+    private var viewModel = LoadingViewModel()
     
     //MARK: - lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
+        animationView = .init(name: "sunLoad")
+        animationView!.frame = view.bounds
+        animationView!.contentMode = .scaleAspectFit
+        animationView!.loopMode = .loop
+        animationView!.animationSpeed = 2
+        view.addSubview(animationView!)
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
+
     //MARK: - flow func
     private func bind() {
         viewModel.showLoading = {
             DispatchQueue.main.async {
-                self.activityIndicator.startAnimating()
+                
+                self.animationView!.play()
             }
         }
         viewModel.hideLoading = {
             DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
+                
+                self.animationView!.stop()
             }
         }
         viewModel.showError = {
@@ -51,6 +56,7 @@ class LoadingViewController: UIViewController{
         viewModel.loadWeatherController = {
             guard let controller = self.storyboard?.instantiateViewController(withIdentifier: Constants.weatherViewController) as? WeatherViewController else { return }
             controller.viewModel.weather = self.viewModel.weather
+
             self.navigationController?.pushViewController(controller, animated: true)
         }
         viewModel.checkFirstStart()

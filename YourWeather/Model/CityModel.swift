@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 class CityModel {
     
     var cities: [CityObject]?

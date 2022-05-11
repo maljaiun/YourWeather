@@ -22,7 +22,7 @@ class CityManager {
                 compelition(object)
             }  
         } catch {
-            print("Can't parse cities \(error)")
+            print("Can't parse cities \(error.localizedDescription)")
         }
     }
 }

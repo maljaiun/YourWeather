@@ -51,8 +51,8 @@ class StartViewController: UIViewController{
     
     //Background video
     @objc func playerItemDidReachEnd(notification: Notification) {
-        let p: AVPlayerItem = notification.object as! AVPlayerItem
-        p.seek(to: .zero)
+        let playerItem: AVPlayerItem = notification.object as! AVPlayerItem
+        playerItem.seek(to: .zero, completionHandler: nil)
     }
     
     private func playVideoBackground() {

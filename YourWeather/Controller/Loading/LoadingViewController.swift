@@ -32,13 +32,11 @@ class LoadingViewController: UIViewController{
     private func bind() {
         viewModel.showLoading = {
             DispatchQueue.main.async {
-                
                 self.animationView!.play()
             }
         }
         viewModel.hideLoading = {
             DispatchQueue.main.async {
-                
                 self.animationView!.stop()
             }
         }

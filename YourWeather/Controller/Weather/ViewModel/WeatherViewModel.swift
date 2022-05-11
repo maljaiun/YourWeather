@@ -29,7 +29,8 @@ class WeatherViewModel: NSObject {
     
     private let locationManager = CLLocationManager()
     var weather = WeatherModel()
-    var reloadTableView: (()->())?
+    var reloadCollectionView: (()->())?
+    
     var numberOfDailyCells: Int {
         return weather.dailyWeatherObject?.icon.count ?? 8
     }
@@ -43,7 +44,7 @@ class WeatherViewModel: NSObject {
     func addWeatherSettings() {
         guard let currentWeather = self.weather.currentWeatherObject else { return }
         self.navigationBarTitle.value = currentWeather.name
-        self.currentTime.value = weather.dateFormater(date: currentWeather.dt, dateFormat: "HH:mm E")
+        self.currentTime.value = dateFormater(date: currentWeather.dt, dateFormat: "HH:mm E")
         self.currentTemperature.value = "\(currentWeather.temp.doubleToString())°"
         self.currentFeelingWeather.value = "\(currentWeather.feels_like.doubleToString())°"
         self.currentMaxWeather.value = "\(currentWeather.temp_max.doubleToString())°"
@@ -54,7 +55,7 @@ class WeatherViewModel: NSObject {
         self.currentWindSpeed.value = "\(currentWeather.speed)м/с"
         self.currentHumidity.value = "\(currentWeather.humidity.doubleToString())%"
         self.backgroundImageView.value = UIImage(named: "\(currentWeather.weather?.icon ?? "01n")-2")
-        self.reloadTableView?()
+        self.reloadCollectionView?()
     }
 
     func getWeather () {
@@ -80,21 +81,21 @@ class WeatherViewModel: NSObject {
     }
     
     //MARK: - collection cells configure
-    func dailyConfigureCell (cell: DailyCollectionViewCell, indexPath: IndexPath) -> DailyCollectionViewCell {
-        
+    func dailyConfigureCell (cell: DailyCollectionViewCell, indexPath: IndexPath) -> DailyCollectionViewCell {   
         cell.configure(dailyWeatherObject: weather.dailyWeatherObject!, indexPath: indexPath.row)
         cell.dailyDate.text = dateFormater(date: (weather.dailyWeatherObject?.dt[indexPath.row])!, dateFormat: "E d MMM")
         return cell
     }
     
+    
     func hourlyConfigureCell (cell: HourlyCollectionViewCell, indexPath: IndexPath) -> HourlyCollectionViewCell {
-        
         cell.configure(dailyWeatherObject: weather.dailyWeatherObject!, indexPath: indexPath.row)
         cell.hourlyTime.text = dateFormater(date: (weather.dailyWeatherObject?.hourly?.dt[indexPath.row])!, dateFormat: "HH:mm")
         return cell
     }
     
 }
+
 //MARK: - Extensions
 extension WeatherViewModel: SearchViewModelDelegate {
     func setLocation(_ lat: Double, _ lon: Double) {

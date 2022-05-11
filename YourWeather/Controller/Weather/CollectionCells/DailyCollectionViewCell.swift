@@ -8,6 +8,7 @@
 import UIKit
 
 class DailyCollectionViewCell: UICollectionViewCell {
+    
     @IBOutlet weak var dailyImage: UIImageView!
     @IBOutlet weak var dailyDate: UILabel!
     @IBOutlet weak var dailyMaxTemp: UILabel!
@@ -22,6 +23,5 @@ class DailyCollectionViewCell: UICollectionViewCell {
         dailyMinTemp.text = "\(dailyWeatherObject.min[indexPath].doubleToString())°"
         dailyMaxTemp.text = "\(dailyWeatherObject.max[indexPath].doubleToString())°"
     }
-    
     
 }

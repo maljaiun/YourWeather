@@ -91,6 +91,7 @@ class WeatherViewController: UIViewController {
             self.backgroundImageView.frame.origin.x -= 100
         }, completion: nil)
     }
+    
     private func actualWeatherAnimate() {
         UIView.animate(withDuration: 2, delay: 0, options: [.repeat, .autoreverse], animations: {
             self.currentImageWeather.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
@@ -160,7 +161,8 @@ class WeatherViewController: UIViewController {
         self.viewModel.backgroundImageView.bind { [weak self] backgroundImageView in
             self?.backgroundImageView.image = backgroundImageView
         }
-        self.viewModel.reloadTableView = { 
+        
+        self.viewModel.reloadCollectionView = {
             DispatchQueue.main.async {
                 self.dailyCollectionView.reloadData()
                 self.hourlyCollectionView.reloadData()
@@ -175,13 +177,11 @@ class WeatherViewController: UIViewController {
 //collection View
 extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         if collectionView == dailyCollectionView {
             return viewModel.numberOfDailyCells
         } else {
             return viewModel.numberOfHourlyCells
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

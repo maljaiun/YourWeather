@@ -14,14 +14,14 @@ class DailyCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var dailyMaxTemp: UILabel!
     @IBOutlet weak var dailyMinTemp: UILabel!
     
-    func configure(dailyWeatherObject: DailyWeatherObject, indexPath: Int) {
+    func configure(daily: Daily, indexPath: Int) {
         dailyDate.textColor = .white
         dailyMaxTemp.textColor = .white
         dailyMinTemp.textColor = .white
         dailyImage.contentMode = .scaleAspectFit
-        dailyImage.image = UIImage(named: "\(dailyWeatherObject.icon[indexPath])-1.png")
-        dailyMinTemp.text = "\(dailyWeatherObject.min[indexPath].doubleToString())°"
-        dailyMaxTemp.text = "\(dailyWeatherObject.max[indexPath].doubleToString())°"
+        dailyImage.image = UIImage(named: "\(daily.weather.first!.icon)-1.png")
+        dailyMinTemp.text = "\(daily.temp.min.doubleToString())°"
+        dailyMaxTemp.text = "\(daily.temp.max.doubleToString())°"
     }
     
 }

@@ -10,10 +10,10 @@ import Foundation
 class CityObject: Codable{
     var name: String
     var country: String
-    var coord: Coord
+    var coord: CoordCity
 }
 
-class Coord: Codable {
+class CoordCity: Codable {
     var lat: Double
     var lon: Double
 }

@@ -42,6 +42,7 @@
 		49D40F4427C3AEC400623725 /* CityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D40F4327C3AEC400623725 /* CityManager.swift */; };
 		49D40F4627C3AF3C00623725 /* CityObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D40F4527C3AF3C00623725 /* CityObject.swift */; };
 		49DC47842823CFCF00800213 /* sunLoad.json in Resources */ = {isa = PBXBuildFile; fileRef = 49DC47832823CFCF00800213 /* sunLoad.json */; };
+		49DC7D24283167A10058BFAA /* DailyWeatherObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC7D23283167A10058BFAA /* DailyWeatherObject.swift */; };
 		5A3F4E7127AA66B4B413F8EF /* Pods_YourWeather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC6DE17BA62F1458017C47A /* Pods_YourWeather.framework */; };
 /* End PBXBuildFile section */
 
@@ -86,6 +87,7 @@
 		49D40F4327C3AEC400623725 /* CityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityManager.swift; sourceTree = "<group>"; };
 		49D40F4527C3AF3C00623725 /* CityObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityObject.swift; sourceTree = "<group>"; };
 		49DC47832823CFCF00800213 /* sunLoad.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sunLoad.json; sourceTree = "<group>"; };
+		49DC7D23283167A10058BFAA /* DailyWeatherObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWeatherObject.swift; sourceTree = "<group>"; };
 		58F1889E37C9A20C1B86EE11 /* Pods-YourWeather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YourWeather.release.xcconfig"; path = "Target Support Files/Pods-YourWeather/Pods-YourWeather.release.xcconfig"; sourceTree = "<group>"; };
 		6EC6DE17BA62F1458017C47A /* Pods_YourWeather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YourWeather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0D75F80C2DA272725ED41BA /* Pods-YourWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YourWeather.debug.xcconfig"; path = "Target Support Files/Pods-YourWeather/Pods-YourWeather.debug.xcconfig"; sourceTree = "<group>"; };
@@ -239,8 +241,9 @@
 		499748ED27D9E29F00CF265D /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				49D40F4527C3AF3C00623725 /* CityObject.swift */,
-				49385E5227C10F1900C30EAC /* WeatherObject.swift */,
+				49DC7D262831681C0058BFAA /* CurrentWeather */,
+				49DC7D222831677F0058BFAA /* DailyWeather */,
+				49DC7D252831680D0058BFAA /* CityObject */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -330,6 +333,30 @@
 				49B18D5C27D8DF04009AF08C /* Localizable.strings */,
 			);
 			path = Localize;
+			sourceTree = "<group>";
+		};
+		49DC7D222831677F0058BFAA /* DailyWeather */ = {
+			isa = PBXGroup;
+			children = (
+				49DC7D23283167A10058BFAA /* DailyWeatherObject.swift */,
+			);
+			path = DailyWeather;
+			sourceTree = "<group>";
+		};
+		49DC7D252831680D0058BFAA /* CityObject */ = {
+			isa = PBXGroup;
+			children = (
+				49D40F4527C3AF3C00623725 /* CityObject.swift */,
+			);
+			path = CityObject;
+			sourceTree = "<group>";
+		};
+		49DC7D262831681C0058BFAA /* CurrentWeather */ = {
+			isa = PBXGroup;
+			children = (
+				49385E5227C10F1900C30EAC /* WeatherObject.swift */,
+			);
+			path = CurrentWeather;
 			sourceTree = "<group>";
 		};
 		5B1ECF9657498B9D422C26AC /* Frameworks */ = {
@@ -511,6 +538,7 @@
 				491576B027C6108800894ED4 /* LoadingViewController.swift in Sources */,
 				49D40F3F27C3ABC800623725 /* SearchTableViewCell.swift in Sources */,
 				49537F4927C18B0600432BCC /* String+extension.swift in Sources */,
+				49DC7D24283167A10058BFAA /* DailyWeatherObject.swift in Sources */,
 				4908238E27F8643E009F5998 /* StartViewModel.swift in Sources */,
 				49D40F4627C3AF3C00623725 /* CityObject.swift in Sources */,
 				491576AE27C60C4C00894ED4 /* NoLocationWeatherManager.swift in Sources */,

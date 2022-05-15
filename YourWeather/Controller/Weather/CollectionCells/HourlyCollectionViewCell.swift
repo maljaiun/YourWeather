@@ -12,11 +12,11 @@ class HourlyCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var hourlyTemp: UILabel!
     @IBOutlet weak var hourlyTime: UILabel!
     
-    func configure(dailyWeatherObject: DailyWeatherObject, indexPath: Int) {
+    func configure(hourly: Hourly, indexPath: Int) {
         hourlyTemp.textColor = .white
         hourlyTime.textColor = .white
         hourlyImageVew.contentMode = .scaleAspectFit
-        hourlyImageVew.image = UIImage(named: "\(dailyWeatherObject.hourly?.icon[indexPath] ?? "05n")-1.png")
-        hourlyTemp.text = "\(dailyWeatherObject.hourly?.temp[indexPath].doubleToString() ?? "0")°"
+        hourlyImageVew.image = UIImage(named: "\(hourly.weather.first!.icon)-1.png")
+        hourlyTemp.text = "\(hourly.temp.doubleToString())°"
     }
 }

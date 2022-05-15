@@ -24,37 +24,37 @@ class WeatherViewModel: NSObject {
     var currentWindSpeed = Bindable<String?>(nil)
     var currentTime = Bindable<String?>(nil)
     var backgroundImageView = Bindable<UIImage?>(nil)
-    var currentWeatherObject = Bindable<CurrentWeatherObject?>(nil)
-    var dailyCollectionView = Bindable<DailyWeatherObject?>(nil)
+    var currentWeatherObject = Bindable<CurrentWeather?>(nil)
+    var dailyCollectionView = Bindable<DailyWeather?>(nil)
     
     private let locationManager = CLLocationManager()
     var weather = WeatherModel()
     var reloadCollectionView: (()->())?
     
     var numberOfDailyCells: Int {
-        return weather.dailyWeatherObject?.icon.count ?? 8
+        return weather.dailyWeather?.daily.count ?? 8
     }
     
     var numberOfHourlyCells: Int {
-        return weather.dailyWeatherObject?.hourly?.temp.count ?? 24
+        return weather.dailyWeather?.hourly.count ?? 24
     }
     
     
     //MARK: - flow func
     func addWeatherSettings() {
-        guard let currentWeather = self.weather.currentWeatherObject else { return }
+        guard let currentWeather = self.weather.currentWeather else { return }
         self.navigationBarTitle.value = currentWeather.name
         self.currentTime.value = dateFormater(date: currentWeather.dt, dateFormat: "HH:mm E")
-        self.currentTemperature.value = "\(currentWeather.temp.doubleToString())°"
-        self.currentFeelingWeather.value = "\(currentWeather.feels_like.doubleToString())°"
-        self.currentMaxWeather.value = "\(currentWeather.temp_max.doubleToString())°"
-        self.currentMinWeather.value = "\(currentWeather.temp_min.doubleToString())°"
-        self.currentImageWeather.value = UIImage(named: "\(currentWeather.weather?.icon ?? "01n")-1.png")
-        self.currentDescription.value = currentWeather.weather?.description.capitalizingFirstLetter()
-        self.currentPressure.value = "\(currentWeather.pressurre.doubleToString())мм"
-        self.currentWindSpeed.value = "\(currentWeather.speed)м/с"
-        self.currentHumidity.value = "\(currentWeather.humidity.doubleToString())%"
-        self.backgroundImageView.value = UIImage(named: "\(currentWeather.weather?.icon ?? "01n")-2")
+        self.currentTemperature.value = "\(currentWeather.main.temp.doubleToString())°"
+        self.currentFeelingWeather.value = "\(currentWeather.main.feels_like.doubleToString())°"
+        self.currentMaxWeather.value = "\(currentWeather.main.temp_max.doubleToString())°"
+        self.currentMinWeather.value = "\(currentWeather.main.temp_min.doubleToString())°"
+        self.currentImageWeather.value = UIImage(named: "\(currentWeather.weather.first!.icon)-1.png")
+        self.currentDescription.value = currentWeather.weather.first!.description.capitalizingFirstLetter()
+        self.currentPressure.value = "\(currentWeather.main.pressure.doubleToString())мм"
+        self.currentWindSpeed.value = "\(currentWeather.wind.speed)м/с"
+        self.currentHumidity.value = "\(currentWeather.main.humidity.doubleToString())%"
+        self.backgroundImageView.value = UIImage(named: "\(currentWeather.weather.first!.icon)-2")
         self.reloadCollectionView?()
     }
 
@@ -74,23 +74,23 @@ class WeatherViewModel: NSObject {
     private func dateFormater(date: TimeInterval, dateFormat: String) -> String {
         let dateText = Date(timeIntervalSince1970: date )
         let formater = DateFormatter()
-        formater.timeZone = TimeZone(secondsFromGMT: weather.currentWeatherObject?.timezone ?? 0)
+        formater.timeZone = TimeZone(secondsFromGMT: weather.currentWeather?.timezone ?? 0)
         formater.dateFormat = dateFormat
         return formater.string(from: dateText)
         
     }
     
     //MARK: - collection cells configure
-    func dailyConfigureCell (cell: DailyCollectionViewCell, indexPath: IndexPath) -> DailyCollectionViewCell {   
-        cell.configure(dailyWeatherObject: weather.dailyWeatherObject!, indexPath: indexPath.row)
-        cell.dailyDate.text = dateFormater(date: (weather.dailyWeatherObject?.dt[indexPath.row])!, dateFormat: "E d MMM")
+    func dailyConfigureCell (cell: DailyCollectionViewCell, indexPath: IndexPath) -> DailyCollectionViewCell {
+        cell.configure(daily: weather.dailyWeather!.daily[indexPath.row], indexPath: indexPath.row)
+        cell.dailyDate.text = dateFormater(date: (weather.dailyWeather!.daily[indexPath.row].dt), dateFormat: "E d MMM")
         return cell
     }
     
     
     func hourlyConfigureCell (cell: HourlyCollectionViewCell, indexPath: IndexPath) -> HourlyCollectionViewCell {
-        cell.configure(dailyWeatherObject: weather.dailyWeatherObject!, indexPath: indexPath.row)
-        cell.hourlyTime.text = dateFormater(date: (weather.dailyWeatherObject?.hourly?.dt[indexPath.row])!, dateFormat: "HH:mm")
+        cell.configure(hourly: weather.dailyWeather!.hourly[indexPath.row], indexPath: indexPath.row)
+        cell.hourlyTime.text = dateFormater(date: (weather.dailyWeather!.hourly[indexPath.row].dt), dateFormat: "HH:mm")
         return cell
     }
     

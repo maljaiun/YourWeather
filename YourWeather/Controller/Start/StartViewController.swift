@@ -1,6 +1,5 @@
 
 import UIKit
-import CoreLocation
 import AVKit
 
 class StartViewController: UIViewController{
@@ -13,13 +12,12 @@ class StartViewController: UIViewController{
     @IBOutlet weak var privacyLabel: UILabel!
     
     //MARK: - vars/lets
-    let locationManager = CLLocationManager()
     var viewModel = StartViewModel()
     
     //MARK: - lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        actualLocation()
+        viewModel.actualLocation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -75,17 +73,4 @@ class StartViewController: UIViewController{
     
 }
 
-extension StartViewController:  CLLocationManagerDelegate  {
-    private func actualLocation() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-        locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = manager.location?.coordinate else { return }
-        viewModel.saveLocation(location)
-        locationManager.stopUpdatingLocation()
-    }
-}
+

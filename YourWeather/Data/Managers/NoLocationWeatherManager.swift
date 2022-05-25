@@ -6,19 +6,11 @@
 //
 
 import Foundation
-enum NetworkError: Error {
-    case serverError
-    case decodingError
-}
+
 class NoLocationWeatherManager {
     
     static let shared = NoLocationWeatherManager()
     private let key = "1c2ba745810db56a9f945361a2520a0a"
-    
-    enum NetworkError: Error {
-        case serverError
-        case decodingError
-    }
     
     private init() {}
  

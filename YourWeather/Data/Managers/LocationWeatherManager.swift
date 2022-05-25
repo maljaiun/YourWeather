@@ -7,16 +7,16 @@
 
 import Foundation
 
+enum NetworkError: Error {
+    case serverError
+    case decodingError
+}
+
 class LocationWeatherManager {
     
     static let shared = LocationWeatherManager()
     private let key = "1c2ba745810db56a9f945361a2520a0a"
     
-    enum NetworkError: Error {
-        case serverError
-        case decodingError
-    }
-
     private init() {}
  
     func getCurrentWeather(lat:Double,lon:Double,locale: String,completion: @escaping (Result<CurrentWeather,NetworkError>) -> Void) {

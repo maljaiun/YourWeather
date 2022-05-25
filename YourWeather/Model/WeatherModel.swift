@@ -10,7 +10,7 @@ import CoreLocation
 
 class WeatherModel {
     
-    var lang = Locale.current.languageCode
+    private var lang = Locale.current.languageCode
     var lat: Double?
     var lon: Double?
     var currentWeather: CurrentWeather?

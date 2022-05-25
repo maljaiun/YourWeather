@@ -15,7 +15,7 @@ class SearchViewModel: NSObject {
     private var filteredCities = [CityObject]()
     private var lat: Double?
     private var lon: Double?
-    var cellViewModel = [SearchCellViewModel]() {
+    private var cellViewModel = [SearchCellViewModel]() {
         didSet {
             self.reloadTablView?()
         }
@@ -57,7 +57,6 @@ class SearchViewModel: NSObject {
         })
         filteredCities.sort(by: {$0.name.count < $1.name.count})
         createCell()
-        reloadTablView?()
     }
     
     func getCellViewModel(at indexPath: IndexPath) -> SearchCellViewModel {

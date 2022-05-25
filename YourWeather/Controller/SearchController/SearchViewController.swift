@@ -36,16 +36,16 @@ class SearchViewController: UIViewController {
     //MARK: - flow func
     
     private func updateUI() {
-        self.view.backgroundColor = .clear
-        self.searchNavigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        self.searchNavigationBar.topItem?.searchController = searchController
-        self.searchNavigationBar.tintColor = .white
+        view.backgroundColor = .clear
+        searchNavigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        searchNavigationBar.topItem?.searchController = searchController
+        searchNavigationBar.tintColor = .white
         searchController.searchResultsUpdater = self
         searchController.searchBar.isHidden = false
         searchController.searchBar.placeholder = "Search".localize
         searchController.searchBar.backgroundColor = .clear
         searchController.searchBar.searchTextField.textColor = .white
-        self.searchNavigationBar.topItem?.title = "Location".localize
+        searchNavigationBar.topItem?.title = "Location".localize
         
     }
     private func bind() {

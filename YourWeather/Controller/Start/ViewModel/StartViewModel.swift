@@ -1,6 +1,5 @@
 
 import Foundation
-import UIKit
 import CoreLocation
 
 class StartViewModel: NSObject {

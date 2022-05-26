@@ -10,12 +10,10 @@ class SearchViewController: UIViewController {
     //MARK: - vars/lets
     private let searchController = UISearchController(searchResultsController: nil)
     var viewModel = SearchViewModel()
-    var searchVC:SearchViewController?
     
     //MARK: - lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchVC = self
         bind()
     }
     
@@ -23,6 +21,7 @@ class SearchViewController: UIViewController {
         super.viewWillAppear(animated)
         updateUI()
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.tintColor = .white

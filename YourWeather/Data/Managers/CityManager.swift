@@ -1,9 +1,3 @@
-//
-//  CityManager.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 21.02.2022.
-//
 
 import Foundation
 

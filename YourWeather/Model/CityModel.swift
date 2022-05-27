@@ -1,9 +1,3 @@
-//
-//  CityModel.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 05.05.2022.
-//
 
 import Foundation
 

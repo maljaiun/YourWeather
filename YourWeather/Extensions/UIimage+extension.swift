@@ -1,9 +1,3 @@
-//
-//  UIimage+extension.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 28.02.2022.
-//
 
 import Foundation
 import UIKit

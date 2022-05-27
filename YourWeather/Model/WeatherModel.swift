@@ -1,9 +1,3 @@
-//
-//  WeatherModel.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 15.03.2022.
-//
 
 import Foundation
 import CoreLocation

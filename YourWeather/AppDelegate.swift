@@ -1,9 +1,3 @@
-//
-//  AppDelegate.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 16.02.2022.
-//
 
 import UIKit
 import Firebase

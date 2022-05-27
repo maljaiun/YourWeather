@@ -1,9 +1,3 @@
-//
-//  DailyWeatherObject.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 15.05.2022.
-//
 
 import Foundation
 

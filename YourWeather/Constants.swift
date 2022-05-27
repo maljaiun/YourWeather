@@ -1,9 +1,3 @@
-//
-//  Constants.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 20.03.2022.
-//
 
 import Foundation
 

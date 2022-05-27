@@ -1,9 +1,3 @@
-//
-//  UIView.+extensionswift.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 20.02.2022.
-//
 
 import Foundation
 import UIKit

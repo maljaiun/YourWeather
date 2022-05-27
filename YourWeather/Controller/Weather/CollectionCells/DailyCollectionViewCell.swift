@@ -1,9 +1,3 @@
-//
-//  DailyCollectionViewCell.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 22.02.2022.
-//
 
 import UIKit
 

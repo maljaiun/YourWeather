@@ -1,9 +1,3 @@
-//
-//  WeatherViewController.swift
-//  YourWeather
-//
-//  Created by Kirill Sytkov on 17.02.2022.
-//
 
 import UIKit
 

@@ -15,6 +15,7 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
+        self.navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     override func viewWillAppear(_ animated: Bool) {

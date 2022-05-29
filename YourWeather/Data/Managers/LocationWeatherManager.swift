@@ -18,6 +18,7 @@ class LocationWeatherManager {
             completion(.failure(.serverError))
             return
         }
+        
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 completion(.failure(.serverError))

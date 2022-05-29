@@ -1,7 +1,6 @@
 
 import Foundation
 import UIKit
-import CoreLocation
 
 class WeatherViewModel: NSObject {
     
@@ -21,7 +20,6 @@ class WeatherViewModel: NSObject {
     var currentWeatherObject = Bindable<CurrentWeather?>(nil)
     var dailyCollectionView = Bindable<DailyWeather?>(nil)
     
-    private let locationManager = CLLocationManager()
     var weather = WeatherModel()
     var reloadCollectionView: (()->())?
     
@@ -99,17 +97,3 @@ extension WeatherViewModel: SearchViewModelDelegate {
     }
 }
 
-extension WeatherViewModel: CLLocationManagerDelegate{
-    private func actualLocation() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-        locationManager.startUpdatingLocation()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = manager.location?.coordinate else { return }
-        weather.lat = location.latitude
-        weather.lon = location.longitude
-        locationManager.stopUpdatingLocation()
-    }
-}

@@ -2,7 +2,7 @@
 import Foundation
 import UIKit
 
-class WeatherViewModel: NSObject {
+class WeatherViewModel {
     
     //MARK: - vars/lets
     var navigationBarTitle = Bindable<String?>(nil)

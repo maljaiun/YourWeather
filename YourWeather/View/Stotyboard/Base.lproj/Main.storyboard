@@ -805,7 +805,7 @@
                                 <blurEffect style="regular"/>
                             </visualEffectView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="lVs-TV-TRb">
-                                <rect key="frame" x="0.0" y="140" width="414" height="722"/>
+                                <rect key="frame" x="0.0" y="191" width="414" height="671"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -894,6 +894,11 @@
                                     <outlet property="delegate" destination="IqA-KC-Okf" id="BhS-52-D2S"/>
                                 </connections>
                             </tableView>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="Nu3-TM-MxL">
+                                <rect key="frame" x="0.0" y="140" width="414" height="51"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                             <navigationBar contentMode="scaleToFill" largeTitles="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uhc-ts-Jx3">
                                 <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -923,11 +928,14 @@
                         <viewLayoutGuide key="safeArea" id="IHK-0i-dvo"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="lVs-TV-TRb" firstAttribute="top" secondItem="uhc-ts-Jx3" secondAttribute="bottom" id="AmX-Lb-Za2"/>
+                            <constraint firstItem="lVs-TV-TRb" firstAttribute="top" secondItem="Nu3-TM-MxL" secondAttribute="bottom" id="AmX-Lb-Za2"/>
                             <constraint firstItem="N1a-Oi-qfo" firstAttribute="top" secondItem="Obi-WC-IgU" secondAttribute="top" id="Ar6-Mu-ggI"/>
                             <constraint firstItem="lVs-TV-TRb" firstAttribute="leading" secondItem="IHK-0i-dvo" secondAttribute="leading" id="ImD-t5-Thw"/>
+                            <constraint firstItem="Nu3-TM-MxL" firstAttribute="trailing" secondItem="IHK-0i-dvo" secondAttribute="trailing" id="JWa-Nt-OwW"/>
                             <constraint firstItem="N1a-Oi-qfo" firstAttribute="leading" secondItem="Obi-WC-IgU" secondAttribute="leading" id="PVe-Dn-qyb"/>
                             <constraint firstItem="IHK-0i-dvo" firstAttribute="trailing" secondItem="lVs-TV-TRb" secondAttribute="trailing" id="SlX-MS-AwM"/>
+                            <constraint firstItem="Nu3-TM-MxL" firstAttribute="top" secondItem="uhc-ts-Jx3" secondAttribute="bottom" id="XYC-j0-3le"/>
+                            <constraint firstItem="Nu3-TM-MxL" firstAttribute="leading" secondItem="IHK-0i-dvo" secondAttribute="leading" id="ZD5-Je-i2w"/>
                             <constraint firstItem="uhc-ts-Jx3" firstAttribute="trailing" secondItem="IHK-0i-dvo" secondAttribute="trailing" id="a36-wk-hxq"/>
                             <constraint firstAttribute="bottom" secondItem="N1a-Oi-qfo" secondAttribute="bottom" id="fwQ-8c-DJw"/>
                             <constraint firstItem="N1a-Oi-qfo" firstAttribute="trailing" secondItem="IHK-0i-dvo" secondAttribute="trailing" id="pHB-d2-FVk"/>
@@ -937,13 +945,14 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="searchBar" destination="Nu3-TM-MxL" id="b5G-QA-YCM"/>
                         <outlet property="searchNavigationBar" destination="uhc-ts-Jx3" id="CDn-Ne-aX2"/>
                         <outlet property="searchTableView" destination="lVs-TV-TRb" id="diF-jj-mjr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kx6-J7-jbx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1643" y="416"/>
+            <point key="canvasLocation" x="1642.0289855072465" y="415.84821428571428"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ejd-NF-uq8">

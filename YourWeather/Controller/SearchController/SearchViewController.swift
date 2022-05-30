@@ -6,9 +6,9 @@ class SearchViewController: UIViewController {
     //MARK: - IBOutlets
     @IBOutlet weak var searchTableView: UITableView!
     @IBOutlet weak var searchNavigationBar: UINavigationBar!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     //MARK: - vars/lets
-    private let searchController = UISearchController(searchResultsController: nil)
     var viewModel = SearchViewModel()
     
     //MARK: - lyfecycle
@@ -38,16 +38,14 @@ class SearchViewController: UIViewController {
     private func updateUI() {
         view.backgroundColor = .clear
         searchNavigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        searchNavigationBar.topItem?.searchController = searchController
-        searchNavigationBar.tintColor = .white
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.isHidden = false
-        searchController.searchBar.placeholder = "Search".localize
-        searchController.searchBar.backgroundColor = .clear
-        searchController.searchBar.searchTextField.textColor = .white
         searchNavigationBar.topItem?.title = "Location".localize
-        
+        searchNavigationBar.tintColor = .white
+        searchBar.delegate = self
+        searchBar.searchTextField.backgroundColor = .clear
+        searchBar.searchTextField.textColor = .white
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search".localize, attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
     }
+    
     private func bind() {
         viewModel.reloadTablView = { 
             DispatchQueue.main.async { self.searchTableView.reloadData() }
@@ -66,6 +64,17 @@ extension SearchViewController: UISearchResultsUpdating {
         viewModel.searchCity(text: text)
     }
     
+}
+
+extension SearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.searchCity(text: searchText)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.searchCity(text: searchBar.text!)
+        self.searchBar.endEditing(true)
+    }
 }
 
 // TableView delegate
